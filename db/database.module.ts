@@ -2,9 +2,6 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Config } from '../config/configuration.enum';
-import { UserEntity } from '../src/users/entities/user.entity';
-import { RoleEntity } from '../src/users/entities/role.entity';
-import { UserHistoryEntity } from '../src/users/entities/user-history.entity';
 
 @Module({
   imports: [
@@ -18,7 +15,7 @@ import { UserHistoryEntity } from '../src/users/entities/user-history.entity';
         username: configService.get(Config.DB_USER),
         password: configService.get(Config.DB_PASSWORD),
         database: configService.get(Config.DB_DATABASE),
-        entities: [UserEntity, RoleEntity, UserHistoryEntity],
+        entities: [__dirname + '/../**/*.entity.{js,ts}'],
         synchronize: false,
       }),
     }),
