@@ -19,10 +19,10 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "ts-node ./node_modules/typeorm/cli",
-    "typeorm:run-migrations": "npm run typeorm migration:run -- -d ./dist/config/datasource.js",
-    "typeorm:generate-migration": "npm run typeorm -- -d ./dist/config/datasource.js migration:generate src/migrations/$name",
-    "typeorm:create-migration": "npm run typeorm -- migration:create src/migrations/$name",
-    "typeorm:revert-migration": "npm run typeorm -- -d ./dist/config/datasource.js migration:revert"
+    "migration:run": "npm run typeorm migration:run -- -d ./dist/config/datasource.js",
+    "migration:generate": "npm run typeorm -- -d ./dist/config/datasource.js migration:generate src/migrations/$name",
+    "migration:create": "npm run typeorm -- migration:create src/migrations/$name",
+    "migration:revert": "npm run typeorm -- -d ./dist/config/datasource.js migration:revert"
   },
   "dependencies": {
     "@ivankrtv/openapidoc": "^0.3.0",

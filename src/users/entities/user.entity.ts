@@ -1,13 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { RoleEntity } from './role.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { UserRolesEnum } from '../../enums/user-roles.enum';
 
 @Entity('user')
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column()
-  login: string;
 
   @Column()
   email: string;
@@ -21,6 +18,13 @@ export class UserEntity {
   @Column({ type: 'timestamp', nullable: true })
   updatedAt: Date;
 
-  @ManyToOne(() => RoleEntity)
-  roles: RoleEntity[];
+  @Column({
+    type: 'enum',
+    enum: UserRolesEnum,
+    default: UserRolesEnum.user,
+  })
+  role: UserRolesEnum;
+
+  @Column()
+  refreshToken: string;
 }
