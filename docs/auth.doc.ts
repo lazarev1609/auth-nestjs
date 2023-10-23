@@ -1,13 +1,13 @@
 import { authTag, commonController } from './openapi';
-import { LoginRequestDto } from '../src/auth/dto/requests/login-request.dto';
-import { LoginResponseDto } from '../src/auth/dto/responses/login-response.dto';
+import { LoginRequestDto } from '../src/services/auth/dto/requests/login-request.dto';
+import { LoginResponseDto } from '../src/services/auth/dto/responses/login-response.dto';
 import { DomainErrorDto } from './errors/domain-error.dto';
 import { ValidationErrorDto } from './errors/validation-error.dto';
 import { NotFoundErrorDto } from './errors/not-found-error.dto';
-import { ChangePasswordRequestDto } from '../src/auth/dto/requests/change-password-request.dto';
-import { RegistrationRequestDto } from '../src/auth/dto/requests/registration-request.dto';
-import { RefreshRequestDto } from '../src/auth/dto/requests/refresh-request.dto';
-import { RefreshResponseDto } from '../src/auth/dto/responses/refresh-response.dto';
+import { ChangePasswordRequestDto } from '../src/services/auth/dto/requests/change-password-request.dto';
+import { RegistrationRequestDto } from '../src/services/auth/dto/requests/registration-request.dto';
+import { RefreshRequestDto } from '../src/services/auth/dto/requests/refresh-request.dto';
+import { RefreshResponseDto } from '../src/services/auth/dto/responses/refresh-response.dto';
 
 const authController = commonController.createController('/auth', [authTag]);
 
@@ -46,7 +46,7 @@ authController.addApiMethod('/password/change', {
   },
 });
 
-authController.addApiMethod('/registration', {
+authController.addApiMethod('/register', {
   method: 'POST',
   title: 'Регистрация с помощью Email',
   isImplemented: false,
