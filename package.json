@@ -22,7 +22,8 @@
     "migration:run": "npm run typeorm migration:run -- -d ./dist/config/datasource.js",
     "migration:generate": "npm run typeorm -- -d ./dist/config/datasource.js migration:generate src/migrations/$name",
     "migration:create": "npm run typeorm -- migration:create src/migrations/$name",
-    "migration:revert": "npm run typeorm -- -d ./dist/config/datasource.js migration:revert"
+    "migration:revert": "npm run typeorm -- -d ./dist/config/datasource.js migration:revert",
+    "generate:module": "mkdir src/services/$name && cd src/services/ && nest g module $name --no-spec && nest g controller $name --no-spec && nest g service $name --no-spec"
   },
   "dependencies": {
     "@ivankrtv/openapidoc": "^0.3.0",
