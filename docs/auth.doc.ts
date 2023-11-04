@@ -14,7 +14,7 @@ const authController = commonController.createController('/auth', [authTag]);
 authController.addApiMethod('/login', {
   method: 'POST',
   title: 'Авторизация',
-  isImplemented: false,
+  isImplemented: true,
   requiresAuthorization: false,
   requestBody: LoginRequestDto,
   responses: {
@@ -27,7 +27,7 @@ authController.addApiMethod('/login', {
 authController.addApiMethod('/logout', {
   method: 'POST',
   title: 'Выход из системы',
-  isImplemented: false,
+  isImplemented: true,
   requiresAuthorization: false,
   responses: {
     '200': [],
@@ -49,7 +49,7 @@ authController.addApiMethod('/password/change', {
 authController.addApiMethod('/register', {
   method: 'POST',
   title: 'Регистрация с помощью Email',
-  isImplemented: false,
+  isImplemented: true,
   requiresAuthorization: false,
   requestBody: RegistrationRequestDto,
   responses: {

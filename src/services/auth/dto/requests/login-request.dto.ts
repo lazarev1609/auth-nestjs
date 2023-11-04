@@ -1,5 +1,5 @@
 import { StringProperty } from '@ivankrtv/openapidoc/dist';
-import { IsEmail, IsString, Length, MinLength } from 'class-validator';
+import { IsEmail, IsString, Length } from 'class-validator';
 
 export class LoginRequestDto {
   @StringProperty({

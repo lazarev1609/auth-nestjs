@@ -9,4 +9,10 @@ export const configuration = (): Configuration => ({
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DB,
   },
+  jwt: {
+    accessSecret: process.env.JWT_ACCESS_SECRET,
+    accessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN,
+    refreshSecret: process.env.JWT_REFRESH_SERCRET,
+    refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
+  },
 });

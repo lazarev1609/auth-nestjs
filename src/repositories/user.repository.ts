@@ -19,4 +19,11 @@ export class UserRepository {
   public async save(user: UserEntity): Promise<UserEntity> {
     return await this.repo.save(user);
   }
+
+  public async getById(id: string): Promise<UserEntity> {
+    return await this.repo
+      .createQueryBuilder('user')
+      .where('user.id = :id', { id })
+      .getOne();
+  }
 }
