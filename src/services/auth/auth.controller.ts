@@ -1,10 +1,11 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, Controller, Post, Put, Req } from '@nestjs/common';
 import { LoginRequestDto } from './dto/requests/login-request.dto';
 import { LoginResponseDto } from './dto/responses/login-response.dto';
 import { AuthService } from './auth.service';
 import { RegistrationRequestDto } from './dto/requests/registration-request.dto';
 import { ApiNeedAuth } from '../../common/decorators/auth.decorator';
 import RequestWithUser from '../../common/interfaces/request-with-user.interface';
+import { ChangePasswordRequestDto } from './dto/requests/change-password-request.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -19,6 +20,15 @@ export class AuthController {
   @Post('/logout')
   private async logout(@Req() req: RequestWithUser): Promise<void> {
     await this.authService.logout(req.user);
+  }
+
+  @ApiNeedAuth()
+  @Put('/password/change')
+  private async changePassword(
+    @Req() req: RequestWithUser,
+    @Body() dto: ChangePasswordRequestDto,
+  ): Promise<void> {
+    await this.authService.changePassword(req.user, dto);
   }
 
   @Post('/register')

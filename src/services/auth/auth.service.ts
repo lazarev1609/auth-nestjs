@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from '../users/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { Config } from '../../../config/configuration.enum';
+import { ChangePasswordRequestDto } from './dto/requests/change-password-request.dto';
 
 @Injectable()
 export class AuthService {
@@ -40,6 +41,19 @@ export class AuthService {
 
   public async logout(user: UserEntity): Promise<void> {
     user.refreshToken = null;
+    await this.userRepository.save(user);
+  }
+
+  public async changePassword(
+    user: UserEntity,
+    dto: ChangePasswordRequestDto,
+  ): Promise<void> {
+    const verifyPassword = await bcrypt.compare(dto.oldPassword, user.password);
+    if (!verifyPassword) {
+      throw new BadRequestException('Password incorrect');
+    }
+
+    user.password = await bcrypt.hash(dto.newPassword, 10);
     await this.userRepository.save(user);
   }
 

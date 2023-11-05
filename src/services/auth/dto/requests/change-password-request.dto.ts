@@ -1,18 +1,18 @@
-import { IsEmail } from 'class-validator';
+import { IsEmail, IsString } from 'class-validator';
 import { StringProperty } from '@ivankrtv/openapidoc/dist';
 
 export class ChangePasswordRequestDto {
   @StringProperty({
-    description: 'Старый Email пользователя',
-    example: 'user@mail.ru',
+    description: 'Старый пароль пользователя',
+    example: '12345678',
   })
-  @IsEmail()
+  @IsString()
   oldPassword: string;
 
   @StringProperty({
-    description: 'Новый Email пользователя',
-    example: 'user@mail.ru',
+    description: 'Новый пароль пользователя',
+    example: '87654321',
   })
-  @IsEmail()
+  @IsString()
   newPassword: string;
 }
