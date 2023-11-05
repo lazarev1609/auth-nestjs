@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { LoginResponseDto } from './dto/responses/login-response.dto';
 import { LoginRequestDto } from './dto/requests/login-request.dto';
 import { UserRepository } from '../../repositories/user.repository';
@@ -11,6 +15,8 @@ import { UserEntity } from '../users/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { Config } from '../../../config/configuration.enum';
 import { ChangePasswordRequestDto } from './dto/requests/change-password-request.dto';
+import { RefreshRequestDto } from './dto/requests/refresh-request.dto';
+import { RefreshResponseDto } from './dto/responses/refresh-response.dto';
 
 @Injectable()
 export class AuthService {
@@ -77,6 +83,36 @@ export class AuthService {
     const userToCreate = this.userManager.create(dto.email, password);
 
     await this.userRepository.save(userToCreate);
+  }
+
+  public async refreshToken(
+    user: UserEntity,
+    dto: RefreshRequestDto,
+  ): Promise<RefreshResponseDto> {
+    if (user.refreshToken !== dto.refreshToken) {
+      throw new BadRequestException('Refresh token does not match');
+    }
+
+    if (!user.refreshToken) {
+      throw new UnauthorizedException(
+        'User not authorized, refresh token is not set',
+      );
+    }
+
+    try {
+      this.jwtService.verify(dto.refreshToken, {
+        secret: this.configService.get(Config.JWT_REFRESH_SERCRET),
+      });
+    } catch (exception) {
+      throw new UnauthorizedException('Token not fresh or incorrect');
+    }
+
+    const { accessToken, refreshToken } = await this.generateTokenPairs(user);
+
+    user.refreshToken = refreshToken;
+    await this.userRepository.save(user);
+
+    return new RefreshResponseDto(accessToken, refreshToken);
   }
 
   private async generateTokenPairs(

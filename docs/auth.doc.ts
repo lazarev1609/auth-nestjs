@@ -37,7 +37,7 @@ authController.addApiMethod('/logout', {
 authController.addApiMethod('/password/change', {
   method: 'PUT',
   title: 'Смена пароля',
-  isImplemented: false,
+  isImplemented: true,
   requiresAuthorization: true,
   requestBody: ChangePasswordRequestDto,
   responses: {
@@ -61,7 +61,7 @@ authController.addApiMethod('/register', {
 authController.addApiMethod('/token/refresh', {
   method: 'POST',
   title: 'Обновление токенов',
-  isImplemented: false,
+  isImplemented: true,
   requiresAuthorization: true,
   requestBody: RefreshRequestDto,
   responses: {

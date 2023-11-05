@@ -6,6 +6,8 @@ import { RegistrationRequestDto } from './dto/requests/registration-request.dto'
 import { ApiNeedAuth } from '../../common/decorators/auth.decorator';
 import RequestWithUser from '../../common/interfaces/request-with-user.interface';
 import { ChangePasswordRequestDto } from './dto/requests/change-password-request.dto';
+import { RefreshRequestDto } from './dto/requests/refresh-request.dto';
+import { RefreshResponseDto } from './dto/responses/refresh-response.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -34,5 +36,14 @@ export class AuthController {
   @Post('/register')
   private async register(@Body() dto: RegistrationRequestDto): Promise<void> {
     await this.authService.register(dto);
+  }
+
+  @ApiNeedAuth()
+  @Post('/token/refresh')
+  private async refrehToken(
+    @Req() req: RequestWithUser,
+    @Body() dto: RefreshRequestDto,
+  ): Promise<RefreshResponseDto> {
+    return await this.authService.refreshToken(req.user, dto);
   }
 }

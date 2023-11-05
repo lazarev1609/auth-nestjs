@@ -12,4 +12,9 @@ export class RefreshResponseDto {
     example: '1f21cf95-cdc8-4cbd-9aa3-e22dd95b57df3',
   })
   refreshToken: string;
+
+  constructor(accessToken: string, refreshToken: string) {
+    this.accessToken = accessToken;
+    this.refreshToken = refreshToken;
+  }
 }
