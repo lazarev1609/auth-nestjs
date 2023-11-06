@@ -8,6 +8,7 @@ import { ChangePasswordRequestDto } from '../src/services/auth/dto/requests/chan
 import { RegistrationRequestDto } from '../src/services/auth/dto/requests/registration-request.dto';
 import { RefreshRequestDto } from '../src/services/auth/dto/requests/refresh-request.dto';
 import { RefreshResponseDto } from '../src/services/auth/dto/responses/refresh-response.dto';
+import { UnauthorizedErrorDto } from './errors/unauthorized-error.dto';
 
 const authController = commonController.createController('/auth', [authTag]);
 
@@ -43,6 +44,7 @@ authController.addApiMethod('/password/change', {
   responses: {
     '200': [],
     '400': [DomainErrorDto, ValidationErrorDto],
+    '401': [UnauthorizedErrorDto],
   },
 });
 
@@ -67,6 +69,7 @@ authController.addApiMethod('/token/refresh', {
   responses: {
     '200': [RefreshResponseDto],
     '400': [DomainErrorDto, ValidationErrorDto],
+    '401': [UnauthorizedErrorDto],
   },
 });
 
