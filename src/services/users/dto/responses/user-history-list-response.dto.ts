@@ -3,6 +3,7 @@ import {
   IntProperty,
   StringProperty,
 } from '@ivankrtv/openapidoc/dist';
+import { UserHistoryEntity } from '../../entities/user-history.entity';
 
 export class UserHistoryItemResponseDto {
   @StringProperty({
@@ -34,6 +35,14 @@ export class UserHistoryItemResponseDto {
     example: '2023-11-11',
   })
   timestamp: Date;
+
+  constructor(item: UserHistoryEntity) {
+    this.id = item.id;
+    this.user_agent = item.user_agent;
+    this.ip_address = item.ip_address;
+    this.url = item.url;
+    this.timestamp = item.timestamp;
+  }
 }
 
 export class UserHistoryListResponseDto {
@@ -42,8 +51,13 @@ export class UserHistoryListResponseDto {
     minItems: 0,
     items: UserHistoryItemResponseDto,
   })
-  items: number[];
+  items: UserHistoryItemResponseDto[];
 
   @IntProperty({ description: 'Общее количество', example: 10 })
   totalCount: number;
+
+  constructor(items: UserHistoryEntity[], totalCount: number) {
+    this.items = items.map((item) => new UserHistoryItemResponseDto(item));
+    this.totalCount = totalCount;
+  }
 }

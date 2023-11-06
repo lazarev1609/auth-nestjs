@@ -14,8 +14,11 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('/login')
-  private async login(@Body() dto: LoginRequestDto): Promise<LoginResponseDto> {
-    return await this.authService.login(dto);
+  private async login(
+    @Req() req,
+    @Body() dto: LoginRequestDto,
+  ): Promise<LoginResponseDto> {
+    return await this.authService.login(req, dto);
   }
 
   @ApiNeedAuth()
@@ -38,12 +41,10 @@ export class AuthController {
     await this.authService.register(dto);
   }
 
-  @ApiNeedAuth()
   @Post('/token/refresh')
   private async refrehToken(
-    @Req() req: RequestWithUser,
     @Body() dto: RefreshRequestDto,
   ): Promise<RefreshResponseDto> {
-    return await this.authService.refreshToken(req.user, dto);
+    return await this.authService.refreshToken(dto);
   }
 }

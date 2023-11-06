@@ -1,5 +1,6 @@
 import { UserRolesEnum } from '../../../../enums/user-roles.enum';
 import { EnumProperty, StringProperty } from '@ivankrtv/openapidoc/dist';
+import { UserEntity } from '../../entities/user.entity';
 
 export class UserResponseDto {
   @StringProperty({
@@ -34,4 +35,13 @@ export class UserResponseDto {
     example: '1f21cf95-cdc8-4cbd-9aa3-e22dd95b57df3',
   })
   refreshToken: string;
+
+  constructor(user: UserEntity) {
+    this.id = user.id;
+    this.email = user.email;
+    this.createdAt = user.createdAt;
+    this.updatedAt = user.updatedAt;
+    this.role = user.role;
+    this.refreshToken = user.refreshToken;
+  }
 }

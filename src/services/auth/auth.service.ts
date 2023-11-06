@@ -17,6 +17,8 @@ import { Config } from '../../../config/configuration.enum';
 import { ChangePasswordRequestDto } from './dto/requests/change-password-request.dto';
 import { RefreshRequestDto } from './dto/requests/refresh-request.dto';
 import { RefreshResponseDto } from './dto/responses/refresh-response.dto';
+import { UserHistoryEntity } from '../users/entities/user-history.entity';
+import { UserHistoryRepository } from '../../repositories/user-history.repository';
 
 @Injectable()
 export class AuthService {
@@ -25,9 +27,13 @@ export class AuthService {
     private readonly userManager: UserManager,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly userHistoryRepository: UserHistoryRepository,
   ) {}
 
-  public async login(dto: LoginRequestDto): Promise<LoginResponseDto> {
+  public async login(
+    req: any,
+    dto: LoginRequestDto,
+  ): Promise<LoginResponseDto> {
     const user = await this.userRepository.getByEmail(dto.email);
     if (!user) {
       throw new BadRequestException(`User with email ${dto.email} not found`);
@@ -40,7 +46,15 @@ export class AuthService {
     const { accessToken, refreshToken } = await this.generateTokenPairs(user);
 
     user.refreshToken = refreshToken;
-    await this.userRepository.save(user);
+    const updateUser = await this.userRepository.save(user);
+
+    const userHistory = new UserHistoryEntity();
+    userHistory.user_agent = req.get('User-agent');
+    userHistory.ip_address = req.get('Host');
+    userHistory.url = req.url;
+    userHistory.timestamp = new Date();
+    userHistory.user = updateUser;
+    await this.userHistoryRepository.save(userHistory);
 
     return new LoginResponseDto(accessToken, refreshToken);
   }
@@ -86,25 +100,24 @@ export class AuthService {
   }
 
   public async refreshToken(
-    user: UserEntity,
     dto: RefreshRequestDto,
   ): Promise<RefreshResponseDto> {
-    if (user.refreshToken !== dto.refreshToken) {
-      throw new BadRequestException('Refresh token does not match');
-    }
-
-    if (!user.refreshToken) {
-      throw new UnauthorizedException(
-        'User not authorized, refresh token is not set',
-      );
-    }
-
+    let verifyToken = null;
     try {
-      this.jwtService.verify(dto.refreshToken, {
+      verifyToken = this.jwtService.verify(dto.refreshToken, {
         secret: this.configService.get(Config.JWT_REFRESH_SERCRET),
       });
     } catch (exception) {
       throw new UnauthorizedException('Token not fresh or incorrect');
+    }
+
+    const user = await this.userRepository.getById(verifyToken.userId);
+    if (!user) {
+      throw new BadRequestException(`User not found`);
+    }
+
+    if (user.refreshToken !== dto.refreshToken) {
+      throw new BadRequestException('Refresh token does not match');
     }
 
     const { accessToken, refreshToken } = await this.generateTokenPairs(user);

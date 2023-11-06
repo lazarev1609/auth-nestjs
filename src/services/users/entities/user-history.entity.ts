@@ -19,5 +19,5 @@ export class UserHistoryEntity {
   timestamp: Date;
 
   @ManyToOne(() => UserEntity)
-  user: UserEntity[];
+  user: UserEntity;
 }

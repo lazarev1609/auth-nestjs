@@ -13,7 +13,7 @@ const userController = commonController.createController('user', [userTag]);
 userController.addApiMethod('/me', {
   method: 'GET',
   title: 'Получение данные пользователя',
-  isImplemented: false,
+  isImplemented: true,
   requiresAuthorization: true,
   responses: {
     '200': [UserResponseDto],
