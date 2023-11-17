@@ -25,7 +25,7 @@ userController.addApiMethod('/me', {
 userController.addApiMethod('/history', {
   method: 'GET',
   title: 'Получение истории авторизаций пользователя',
-  isImplemented: false,
+  isImplemented: true,
   requiresAuthorization: true,
   responses: {
     '200': [UserHistoryListResponseDto],
