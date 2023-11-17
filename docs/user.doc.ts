@@ -37,7 +37,7 @@ userController.addApiMethod('/history', {
 userController.addApiMethod('/me/role', {
   method: 'GET',
   title: 'Получение роли пользователя',
-  isImplemented: false,
+  isImplemented: true,
   requiresAuthorization: true,
   responses: {
     '200': [UserRoleResponseDto],
@@ -49,7 +49,7 @@ userController.addApiMethod('/me/role', {
 userController.addApiMethod('/me/role', {
   method: 'PUT',
   title: 'Обновление роли пользователя',
-  isImplemented: false,
+  isImplemented: true,
   requiresAuthorization: true,
   requestBody: UserRoleUpdateRequestDto,
   responses: {
@@ -62,7 +62,7 @@ userController.addApiMethod('/me/role', {
 userController.addApiMethod('/me/role', {
   method: 'DELETE',
   title: 'Удаление роли пользователя',
-  isImplemented: false,
+  isImplemented: true,
   requiresAuthorization: true,
   requestBody: UserRoleDeleteRequestDto,
   responses: {
