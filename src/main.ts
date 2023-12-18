@@ -11,6 +11,6 @@ async function bootstrap() {
 
   SwaggerModule.setup('api/docs', app, openApiDocument as OpenAPIObject);
 
-  await app.listen(3000);
+  await app.listen(3010);
 }
 bootstrap();

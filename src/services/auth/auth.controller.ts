@@ -8,6 +8,8 @@ import RequestWithUser from '../../common/interfaces/request-with-user.interface
 import { ChangePasswordRequestDto } from './dto/requests/change-password-request.dto';
 import { RefreshRequestDto } from './dto/requests/refresh-request.dto';
 import { RefreshResponseDto } from './dto/responses/refresh-response.dto';
+import { VerifyRequestDto } from './dto/requests/VerifyRequest.dto';
+import { VerifyResponseDto } from './dto/responses/verify-response.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -46,5 +48,12 @@ export class AuthController {
     @Body() dto: RefreshRequestDto,
   ): Promise<RefreshResponseDto> {
     return await this.authService.refreshToken(dto);
+  }
+
+  @Post('/token/verify')
+  private async vetifyToken(
+    @Body() dto: VerifyRequestDto,
+  ): Promise<VerifyResponseDto> {
+    return await this.authService.verifyToken(dto);
   }
 }

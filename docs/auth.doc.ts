@@ -9,6 +9,8 @@ import { RegistrationRequestDto } from '../src/services/auth/dto/requests/regist
 import { RefreshRequestDto } from '../src/services/auth/dto/requests/refresh-request.dto';
 import { RefreshResponseDto } from '../src/services/auth/dto/responses/refresh-response.dto';
 import { UnauthorizedErrorDto } from './errors/unauthorized-error.dto';
+import { VerifyRequestDto } from '../src/services/auth/dto/requests/VerifyRequest.dto';
+import { VerifyResponseDto } from '../src/services/auth/dto/responses/verify-response.dto';
 
 const authController = commonController.createController('/auth', [authTag]);
 
@@ -73,16 +75,14 @@ authController.addApiMethod('/token/refresh', {
   },
 });
 
-// todo: за что отвечает
 authController.addApiMethod('/token/verify', {
   method: 'POST',
   title: 'Проверка валидности токена',
   isImplemented: false,
   requiresAuthorization: true,
-  // requestBody: VerifyRequestDto,
+  requestBody: VerifyRequestDto,
   responses: {
-    // '200': [VerifyResponseDto],
-    '200': [],
+    '200': [VerifyResponseDto],
     '400': [DomainErrorDto, ValidationErrorDto],
   },
 });

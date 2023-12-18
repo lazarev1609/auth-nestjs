@@ -19,6 +19,8 @@ import { RefreshRequestDto } from './dto/requests/refresh-request.dto';
 import { RefreshResponseDto } from './dto/responses/refresh-response.dto';
 import { UserHistoryEntity } from '../users/entities/user-history.entity';
 import { UserHistoryRepository } from '../../repositories/user-history.repository';
+import { VerifyRequestDto } from './dto/requests/VerifyRequest.dto';
+import { VerifyResponseDto } from './dto/responses/verify-response.dto';
 
 @Injectable()
 export class AuthService {
@@ -149,6 +151,27 @@ export class AuthService {
     return {
       accessToken,
       refreshToken,
+    };
+  }
+
+  public async verifyToken(dto: VerifyRequestDto): Promise<VerifyResponseDto> {
+    let verifyToken = null;
+
+    try {
+      verifyToken = this.jwtService.verify(dto.accessToken, {
+        secret: this.configService.get(Config.JWT_ACCESS_SECRET),
+      });
+    } catch (exception) {
+      throw new UnauthorizedException('Token not fresh or incorrect');
+    }
+
+    const userResponse = {
+      userId: verifyToken.userId,
+      role: verifyToken.role,
+    };
+
+    return {
+      user: userResponse,
     };
   }
 }
